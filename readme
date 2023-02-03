@@ -5,3 +5,6 @@ language : python and c++
 purpose : 대출 이자 및 원리금 계산기
 
 keyword : loan, interest, rate, principal, repemdtion, 
+
+update log : 
+ - 2023 02 04 , 중도상환 수수료 산식 삽입 
