@@ -15,7 +15,7 @@ def redemption_maturity (principal, rate_per_yr,month_duration):
     print('month, principal, interest, monthly sum')
     for i in range(0,month_duration):
         montly_sum[i] = principals[i]+interests[i]
-        newline = str( i+1 ) +'\t' + str( principals[i] )+'\t' + str( interests[i]  )+'\t' + str( montly_sum[i] )+'\n'
+        newline = str( i+1 ) +'\t' + '{0:0.1f}'.format( principals[i] )+'\t' + '{0:0.1f}'.format( interests[i]  )+'\t' + '{0:0.1f}'.format( montly_sum[i]  )+'\t'+ '\n'
         print( newline )
     total = principals.sum() + interests.sum()
     lastline = 'total redemption : '+ str(total) + '\n' + 'total interests : '+ str(interests.sum()) 
@@ -31,20 +31,23 @@ def EqualityPrincipal(principal, rate_per_yr,month_duration):
     rate_per_month = rate_per_yr / 12 
     interests  =  np.ones([month_duration]) * principal * rate_per_month / 100
     montly_sum =  np.zeros([month_duration])
+    remaining = np.zeros([month_duration])
     print('interest rate : ' + str(rate_per_yr) + ' %')
     print('duration : ' + str(month_duration) + ' month')
-    print('month, principal, interest, montly sum')
+    print('month, \t principal,\t interest,\t montly sum \t remaining \n')
     for i in range(0,month_duration):
         interests[i] = interests[i] * ( 1 - i / month_duration )
+        remaining[i] = principal - principals[0:i+1].sum()
     for i in range(0,month_duration):
-        montly_sum[i] = principals[i]+interests[i]
-        newline = str( i+1 ) +'\t' + str( principals[i] )+'\t' + str( interests[i]  )+'\t' + str( montly_sum[i]  )+'\n'
+        montly_sum[i] = principals[i]+interests[i]        
+        newline = str( i+1 ) +'\t' + '{0:0.1f}'.format( principals[i] )+'\t' + '{0:0.1f}'.format( interests[i]  )+'\t' + '{0:0.1f}'.format( montly_sum[i]  )+'\t' + '{0:0.1f}'.format( remaining[i]  )+'\n'
         print( newline )
     total = principals.sum() + interests.sum()
     lastline = 'total sum : '+ str(total) + '\n' + 'interest sum : '+ str(interests.sum()) 
     print(lastline)    
-    return principals, interests, montly_sum 
+    return principals, interests, montly_sum, remaining
 #EqualityPrincipal (170000000, 5.73,12)
+#EqualityPrincipal (100000000, 5.73,12)
 
 #원리금균등상환
 def EqualityPrincipalInterest(principal, rate_per_yr,month_duration):
@@ -53,20 +56,25 @@ def EqualityPrincipalInterest(principal, rate_per_yr,month_duration):
     KK =  pow( 1 + rate_per_month / 100 , month_duration ) 
     montly_sum = np.ones([month_duration]) * principal * rate_per_month / 100 * KK / (KK - 1)
     interests  = np.ones([month_duration])* principal * rate_per_month / 100
+    remaining = np.zeros([month_duration])
     print('interest rate : ' + str(rate_per_yr) + ' %')
     print('duration : ' + str(month_duration) + ' month')
-    print('month, principal, interest, montly sum')
-    for i in range(1,month_duration):
-        interests[i] = ( montly_sum[0] - interests[i-1] ) * (1 + rate_per_month / 100 )
-        principals[i] = montly_sum[i] - interests[i]
+    print('month, \t principal,\t interest,\t montly sum \t remaining \n')
+    remain = principal
     for i in range(0,month_duration):
-        newline = str( i+1 ) +'\t' + str( principals[i] )+'\t' + str( interests[i]  )+ '\t' + str(montly_sum[i]) + '\n'
+        interests[i] = remain * rate_per_month / 100
+        principals[i] = montly_sum[0] - interests[i]
+        remain = remain - principals[i]
+        remaining[i] = remain
+    for i in range(0,month_duration):
+        newline = str( i+1 ) +'\t' + '{0:0.1f}'.format( principals[i] )+'\t' + '{0:0.1f}'.format( interests[i]  )+'\t' + '{0:0.1f}'.format( montly_sum[i]  )+'\t' + '{0:0.1f}'.format( remaining[i]  )+'\n'
         print( newline )
     total = principals.sum() + interests.sum()
     lastline = 'total sum : '+ str(total) + '\n' + 'interest sum : '+ str(interests.sum()) 
     print(lastline)
 
 #EqualityPrincipalInterest (170000000, 5.73,12)
+# #EqualityPrincipalInterest (100000000, 5.73,12)
 
 #중도상환수수료 계산
 def EarlyRedemption(principal, month_duration, penalty_rate,remaining_days, exemption_period_yr):
