@@ -12,7 +12,7 @@ def redemption_maturity (principal, rate_per_yr,month_duration):
     print('duration : ' + str(month_duration) + ' month')
     interests  =  np.ones([month_duration]) * ( rate_per_month * principal /100)
     montly_sum =  np.zeros([month_duration])
-    print('month, principal, interest, monthly sum')
+    print('month, \t principal, \t interest, \t monthly sum\n')
     for i in range(0,month_duration):
         montly_sum[i] = principals[i]+interests[i]
         newline = str( i+1 ) +'\t' + '{0:0.1f}'.format( principals[i] )+'\t' + '{0:0.1f}'.format( interests[i]  )+'\t' + '{0:0.1f}'.format( montly_sum[i]  )+'\t'+ '\n'
