@@ -1,5 +1,5 @@
 import numpy as np
-import tkinter as *
+import tkinter as tk
 
 #%% core
 
@@ -91,4 +91,34 @@ def EarlyRedemption(principal, month_duration, penalty_rate,remaining_days, exem
 #EarlyRedemption(100000000, 12 * 22, 1,365*2, 3)
 
 #%% tkinter gui 
-window = tkinter.Tk()
+#window = tkinter.Tk()
+
+def main ():
+
+    sz_prompt = 'loancalcul 옵션선택 : \n 1 \t원리금 균등상환 \n 2\t원금균등상환 \n 3\t만기일시상환 \n 4\t중도상환수수료\n'
+
+    option = int(input(sz_prompt))
+    #print(option==1)
+    if (option == 1 |  2| 3):
+        principal = float(input('원금:' ))
+        rate_per_yr = float(input('이자 %:' ))
+        month_duration = int(input('대출기간 (month):' ))
+        if option == 1 :
+            EqualityPrincipalInterest(principal, rate_per_yr,month_duration)
+        elif option == 2 :
+            EqualityPrincipal(principal, rate_per_yr,month_duration)
+        elif option == 3 :
+            redemption_maturity (principal, rate_per_yr,month_duration)
+
+    elif option == 4:
+        principal = float(input('원금:' ))
+        month_duration = int(input('대출기간 (month):' ))
+        penalty_rate = float(input('중도상환 수수료 %:' ))
+        remaining_days = int(input('잔여기간 (days):' ))
+        exemption_period_yr = int(input('면제기간 (yr):' ))
+        redemption= EarlyRedemption(principal, month_duration, penalty_rate,remaining_days, exemption_period_yr)
+        print(redemption)
+
+if __name__ =="__main__":
+    main()
+
